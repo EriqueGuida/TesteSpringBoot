@@ -1,0 +1,5 @@
+br\com\senai\teste\controller\TesteController.class
+br\com\senai\teste\TesteApplication.class
+br\com\senai\teste\model\Aluno.class
+br\com\senai\teste\service\AlunoService.class
+br\com\senai\teste\repository\AlunoRepository.class
