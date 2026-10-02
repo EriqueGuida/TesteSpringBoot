@@ -71,7 +71,7 @@ public class EmprestimoService {
         Emprestimo emprestimo = encontrado.get();
 
         if(emprestimo.getDataDevolucao() == null){
-            emprestimo.setDataDevolucao(null);
+            emprestimo.setDataDevolucao(LocalDate.now());
             emprestimoRepository.save(emprestimo);
         }
 
@@ -85,4 +85,34 @@ public class EmprestimoService {
     public List<Emprestimo> listarPorAluno(Integer alunoId) {
         return emprestimoRepository.findByAlunoId(alunoId);
     }
+
+    public List<Emprestimo> listarAtrasados() {
+        return emprestimoRepository.findByDataPrevistaDevolucaoBeforeAndDataDevolucaoIsNull(LocalDate.now());
+    }
+
+    public List<Emprestimo> listarAtrasadosPorAluno(LocalDate dataAtual, Integer alunoId) {
+        return emprestimoRepository.findByDataPrevistaDevolucaoBeforeAndDataDevolucaoIsNullAndAlunoId(dataAtual, alunoId);
+    }
+
+    public Optional<Emprestimo> renovar (Integer id, LocalDate novaDataPrevistaDevolucao) {
+
+        Optional<Emprestimo> emprestimoOptional = emprestimoRepository.findById(id);
+
+        if (emprestimoOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Emprestimo emprestimo = emprestimoOptional.get();
+
+        if (emprestimo.getDataDevolucao() != null) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Um emprestimo devolvido não pode ser renovado"
+            );
+        }
+
+        emprestimo.setDataPrevistaDevolucao(novaDataPrevistaDevolucao);
+        return Optional.of(emprestimoRepository.save(emprestimo));
+    }
+    
 }

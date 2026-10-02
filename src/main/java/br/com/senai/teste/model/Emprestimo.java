@@ -1,6 +1,8 @@
 package br.com.senai.teste.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "emprestimo")
 public class Emprestimo {
+
+    private static final BigDecimal MULTA_POR_DIA = new BigDecimal("2.00");
     
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -32,6 +36,46 @@ public class Emprestimo {
     public Emprestimo() {
     }
 
+    public String getSituacao(){
+
+        if(dataDevolucao != null){
+            return "DEVOLVIDO";
+        }
+
+        if(dataPrevistaDevolucao == null){
+            return "SEM_PREVISAO";
+        }
+
+        if(dataPrevistaDevolucao.isBefore(LocalDate.now())){
+            return "ATRASADO";
+        }
+
+        return "ATIVO";
+    }
+
+    public long getDiasAtraso(){
+        
+        if (dataDevolucao != null || dataPrevistaDevolucao == null || !dataPrevistaDevolucao.isBefore(LocalDate.now())) {
+            return 0;
+        }
+
+        LocalDate dataFinal;
+
+        if (dataDevolucao == null){
+            dataFinal = LocalDate.now();
+        } else {
+            dataFinal = dataDevolucao;  
+        }
+
+        return ChronoUnit.DAYS.between(dataPrevistaDevolucao, dataFinal);
+    }
+
+    public BigDecimal getValorMulta(){
+        
+        return MULTA_POR_DIA.multiply(BigDecimal.valueOf(getDiasAtraso()));
+    }
+
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -66,5 +110,13 @@ public class Emprestimo {
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public LocalDate getDataPrevistaDevolucao() {
+        return dataPrevistaDevolucao;
+    }
+
+    public void setDataPrevistaDevolucao(LocalDate dataPrevistaDevolucao) {
+        this.dataPrevistaDevolucao = dataPrevistaDevolucao;
     }
 }
