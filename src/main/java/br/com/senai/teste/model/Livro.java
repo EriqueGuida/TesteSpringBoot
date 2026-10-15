@@ -5,9 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
 @Table (name = "livro")
+@Getter
+@Setter 
+@NoArgsConstructor
 public class Livro {
     
     @Id
@@ -17,40 +23,10 @@ public class Livro {
     private String titulo, autor;
     private int anoPublicacao;
 
-    public Livro(){
-    }
-
+    // Construtor com parâmetros
     public Livro(String titulo, String autor, int anoPublicacao){
         this.titulo = titulo;
         this.autor = autor;
-        this.anoPublicacao = anoPublicacao;
-    }
-
-    public int getId(){
-        return id;
-    }
-
-    public String getTitulo(){
-        return titulo;
-    }
-
-    public void setTitulo(String titulo){
-        this.titulo = titulo;
-    }
-
-    public String getAutor(){
-        return autor;
-    }
-
-    public void setAutor(String autor){
-        this.autor = autor;
-    }
-
-    public int getAnoPublicacao(){
-        return anoPublicacao;
-    }
-
-    public void setAnoPublicacao(int anoPublicacao){
         this.anoPublicacao = anoPublicacao;
     }
 }

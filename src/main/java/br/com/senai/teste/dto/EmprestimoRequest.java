@@ -4,7 +4,13 @@ import java.time.LocalDate;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class EmprestimoRequest {
     
     @NotNull (message = "O ID do aluno é obrigatório")
@@ -16,31 +22,4 @@ public class EmprestimoRequest {
     @NotNull (message = "A data prevista de devolução é obrigatória")
     @Future (message = "A data prevista deve ser no futuro")
     private LocalDate dataPrevistaDevolucao;
-
-    public EmprestimoRequest() {
-    }
-
-    public Integer getAlunoId() {
-        return alunoId;
-    }
-
-    public void setAlunoId(Integer alunoId) {
-        this.alunoId = alunoId;
-    }
-
-    public Integer getLivroId() {
-        return livroId;
-    }
-
-    public void setLivroId(Integer livroId) {
-        this.livroId = livroId;
-    }
-
-    public LocalDate getDataPrevistaDevolucao() {
-        return dataPrevistaDevolucao;
-    }
-
-    public void setDataPrevistaDevolucao(LocalDate dataPrevistaDevolucao) {
-        this.dataPrevistaDevolucao = dataPrevistaDevolucao;
-    }
 }

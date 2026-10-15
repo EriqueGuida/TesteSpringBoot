@@ -7,9 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity 
 @Table(name = "aluno")
+@Getter
+@Setter 
+@NoArgsConstructor
 public class Aluno {
     
     @Id
@@ -23,31 +29,9 @@ public class Aluno {
     @Email(message = "Informe um e-mail válido")
     private String email;
 
-    public Aluno(){
-    }
-
+    // Construtor com parâmetros
     public Aluno(String nome, String email){
         this.nome = nome;
-        this.email = email;
-    }
-
-    public int getId(){
-        return id;
-    }
-
-    public String getNome(){
-        return nome;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public void setEmail(String email){
         this.email = email;
     }
 }

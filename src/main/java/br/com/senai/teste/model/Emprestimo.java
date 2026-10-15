@@ -10,9 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "emprestimo")
+@Getter
+@Setter
+@NoArgsConstructor 
 public class Emprestimo {
 
     private static final BigDecimal MULTA_POR_DIA = new BigDecimal("2.00");
@@ -33,9 +39,7 @@ public class Emprestimo {
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
-    public Emprestimo() {
-    }
-
+    // Método para obter a situação do empréstimo
     public String getSituacao(){
 
         if(dataDevolucao != null){
@@ -53,6 +57,7 @@ public class Emprestimo {
         return "ATIVO";
     }
 
+    // Método para calcular os dias de atraso
     public long getDiasAtraso(){
         
         if (dataDevolucao != null || dataPrevistaDevolucao == null || !dataPrevistaDevolucao.isBefore(LocalDate.now())) {
@@ -70,53 +75,9 @@ public class Emprestimo {
         return ChronoUnit.DAYS.between(dataPrevistaDevolucao, dataFinal);
     }
 
+    // Método para calcular o valor da multa
     public BigDecimal getValorMulta(){
         
         return MULTA_POR_DIA.multiply(BigDecimal.valueOf(getDiasAtraso()));
-    }
-
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public LocalDate getDataEmprestimo() {
-        return dataEmprestimo;
-    }
-
-    public void setDataEmprestimo(LocalDate dataEmprestimo) {
-        this.dataEmprestimo = dataEmprestimo;
-    }
-
-    public Aluno getAluno() {
-        return aluno;
-    }
-
-    public void setAluno(Aluno aluno) {
-        this.aluno = aluno;
-    }
-
-    public Livro getLivro() {
-        return livro;
-    }
-
-    public void setLivro(Livro livro) {
-        this.livro = livro;
-    }
-
-    public LocalDate getDataDevolucao() {
-        return dataDevolucao;
-    }
-
-    public void setDataDevolucao(LocalDate dataDevolucao) {
-        this.dataDevolucao = dataDevolucao;
-    }
-
-    public LocalDate getDataPrevistaDevolucao() {
-        return dataPrevistaDevolucao;
-    }
-
-    public void setDataPrevistaDevolucao(LocalDate dataPrevistaDevolucao) {
-        this.dataPrevistaDevolucao = dataPrevistaDevolucao;
     }
 }
