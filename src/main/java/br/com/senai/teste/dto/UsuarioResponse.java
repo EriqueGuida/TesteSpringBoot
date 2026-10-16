@@ -3,7 +3,7 @@ package br.com.senai.teste.dto;
 import br.com.senai.teste.model.Usuario;
 import lombok.Getter;
 
-@Getter
+@Getter 
 public class UsuarioResponse {
     
     private Integer id;
